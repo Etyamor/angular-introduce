@@ -5,6 +5,10 @@
   <title>todo</title>
   <style>
     .done{text-decoration: line-through;color: #ccc;}
+    .table{display: flex;}
+    .table ul, .table p {
+      width: 25%;
+    }
   </style>
 </head>
 <body>
@@ -14,13 +18,25 @@
       <button ng-disabled="frm.$invalid">Go</button>
     </form>
     <button ng-click="clearCompleted()">Clear Completed</button>
-    <ul>
-      <li ng-repeat="todo in todos">
-        <input type="checkbox" ng-model="todo.done" />
-        <span ng-class="{'done':todo.done}">{{todo.title}}</span>
-        <button remove-on-click ng-click="clearTodo(); $event.stopPropagation();">Del</button>
-      </li>
-    </ul>
+    <div class="table">
+      <p>Start</p>
+      <p>Done</p>
+    </div>
+    <div class="table">
+      <ul>
+        <li ng-repeat="todo in todos">
+          <span>{{todo.title}}</span>
+          <button ng-click="goDone()">To Done</button>
+        </li>
+      </ul>
+      <ul>
+        <li ng-repeat="todo in dones">
+          <input type="checkbox" ng-model="todo.done" />
+          <span ng-class="{'done':todo.done}">{{todo.title}}</span>
+          <button ng-click="clearTodo()">Del</button>
+        </li>
+      </ul>
+    </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
   <script>
@@ -37,17 +53,24 @@
         {'title':'Nineth todo','done':false},
         {'title':'Tenth todo','done':false}
       ];
+      $scope.dones = [
+        {'title':'Test Dones','done':false}
+      ]
       $scope.addTodo = function(){
         $scope.todos.push({'title':$scope.newTodo,'done':false})
         $scope.newTodo = '';
       }
       $scope.clearCompleted = function(){
-        $scope.todos = $scope.todos.filter(function(item){
+        $scope.dones = $scope.dones.filter(function(item){
           return !item.done
         })
       }
       $scope.clearTodo = function(){
-        $scope.todos.splice(this.$index, 1); 
+        $scope.dones.splice(this.$index, 1); 
+      }
+      $scope.goDone = function(){
+        $scope.dones.push({'title':$scope.todos[this.$index].title,'done':false});
+        $scope.todos.splice(this.$index, 1);
       }
     }])
   </script>
