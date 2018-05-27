@@ -18,6 +18,7 @@
       <li ng-repeat="todo in todos">
         <input type="checkbox" ng-model="todo.done" />
         <span ng-class="{'done':todo.done}">{{todo.title}}</span>
+        <button remove-on-click ng-click="clearTodo(); $event.stopPropagation();">Del</button>
       </li>
     </ul>
   </div>
@@ -44,6 +45,9 @@
         $scope.todos = $scope.todos.filter(function(item){
           return !item.done
         })
+      }
+      $scope.clearTodo = function(){
+        $scope.todos.splice(this.$index, 1); 
       }
     }])
   </script>
