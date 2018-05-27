@@ -3,13 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>todo</title>
-  <style>
-    .done{text-decoration: line-through;color: #ccc;}
-    .table{display: flex;}
-    .table ul, .table p {
-      width: 25%;
-    }
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div ng-controller="todoController">
@@ -18,61 +12,35 @@
       <button ng-disabled="frm.$invalid">Go</button>
     </form>
     <button ng-click="clearCompleted()">Clear Completed</button>
-    <div class="table">
+    <div class="table-header">
       <p>Start</p>
       <p>Done</p>
     </div>
+    <div class="table-header">
+      <a href="" ng-click="sortType = 'title'; sortReverse = !sortReverse"">
+        Sort
+        <span ng-show="sortType == 'title' && !sortReverse">ABC</span>
+        <span ng-show="sortType == 'title' && sortReverse">CBA</span>
+      </a>
+    </div>
     <div class="table">
       <ul>
-        <li ng-repeat="todo in todos">
-          <span>{{todo.title}}</span>
+        <li ng-repeat="todo in todos | orderBy:sortType:sortReverse">
+          <p>{{todo.title}}</p>
           <button ng-click="goDone()">To Done</button>
         </li>
       </ul>
       <ul>
-        <li ng-repeat="todo in dones">
+        <li ng-repeat="todo in dones | orderBy:sortType:sortReverse">
           <input type="checkbox" ng-model="todo.done" />
-          <span ng-class="{'done':todo.done}">{{todo.title}}</span>
+          <p ng-class="{'done':todo.done}">{{todo.title}}</p>
+          <button ng-click="goBack()">To Back</button>
           <button ng-click="clearTodo()">Del</button>
         </li>
       </ul>
     </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-  <script>
-    angular.module('ToDo',[]).controller('todoController',['$scope',function($scope){
-      $scope.todos = [
-        {'title':'First todo','done':false},
-        {'title':'Second todo','done':false},
-        {'title':'Third todo','done':false},
-        {'title':'Fourth todo','done':false},
-        {'title':'Fifth todo','done':false},
-        {'title':'Sixth todo','done':false},
-        {'title':'Seventh todo','done':false},
-        {'title':'Eighth todo','done':false},
-        {'title':'Nineth todo','done':false},
-        {'title':'Tenth todo','done':false}
-      ];
-      $scope.dones = [
-        {'title':'Test Dones','done':false}
-      ]
-      $scope.addTodo = function(){
-        $scope.todos.push({'title':$scope.newTodo,'done':false})
-        $scope.newTodo = '';
-      }
-      $scope.clearCompleted = function(){
-        $scope.dones = $scope.dones.filter(function(item){
-          return !item.done
-        })
-      }
-      $scope.clearTodo = function(){
-        $scope.dones.splice(this.$index, 1); 
-      }
-      $scope.goDone = function(){
-        $scope.dones.push({'title':$scope.todos[this.$index].title,'done':false});
-        $scope.todos.splice(this.$index, 1);
-      }
-    }])
-  </script>
+  <script src="js/ang-script.js"></script>
 </body>
 </html>
