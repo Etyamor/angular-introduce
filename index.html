@@ -16,22 +16,15 @@
       <p>Start</p>
       <p>Done</p>
     </div>
-    <div class="table-header">
-      <a href="" ng-click="sortType = 'title'; sortReverse = !sortReverse"">
-        Sort
-        <span ng-show="sortType == 'title' && !sortReverse">ABC</span>
-        <span ng-show="sortType == 'title' && sortReverse">CBA</span>
-      </a>
-    </div>
     <div class="table">
       <ul>
-        <li ng-repeat="todo in todos | orderBy:sortType:sortReverse">
+        <li ng-repeat="todo in todos">
           <p>{{todo.title}}</p>
           <button ng-click="goDone()">To Done</button>
         </li>
       </ul>
       <ul>
-        <li ng-repeat="todo in dones | orderBy:sortType:sortReverse">
+        <li ng-repeat="todo in dones">
           <input type="checkbox" ng-model="todo.done" />
           <p ng-class="{'done':todo.done}">{{todo.title}}</p>
           <button ng-click="goBack()">To Back</button>
